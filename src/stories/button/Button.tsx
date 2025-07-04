@@ -1,33 +1,39 @@
 import styles from "./button.module.css";
-
 export interface ButtonProps {
-  /** Is this the principal call to action on the page? */
-  primary?: boolean;
-  /** What background color to use */
-  backgroundColor?: string;
-  /** How large should the button be? */
-  size?: 'small' | 'medium' | 'large';
-  /** Button contents */
+  mode?: "primary" | "secondary";
+  size?: "small" | "medium" | "large";
   label: string;
-  /** Optional click handler */
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-/** Primary UI component for user interaction */
 export const Button = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
+  mode = "primary",
+  size = "medium",
   label,
-  ...props
+  onClick = () => {},
+  disabled = false,
 }: ButtonProps) => {
-  const mode = primary ? styles['storybook-button--primary'] : styles['storybook-button--secondary'];
+  const getButtonStyles = () => {
+    let arr = [
+      styles["storybook-button"],
+      styles[`storybook-button--${size}`],
+      styles[`storybook-button--${mode}`],
+    ];
+    if (disabled) {
+      arr.push(styles["disabled"]);
+    }
+    return arr.join(" ");
+  };
+
+  const buttonStyles = getButtonStyles();
+
   return (
     <button
       type="button"
-      className={[styles['storybook-button'], styles[`storybook-button--${size}`], mode].join(' ')}
-      style={{ backgroundColor }}
-      {...props}
+      disabled={disabled}
+      onClick={onClick}
+      className={buttonStyles}
     >
       {label}
     </button>
