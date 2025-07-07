@@ -30,5 +30,6 @@
 }
 .disabled {
   background-color: lightgrey;
-  color: grey
+  color: grey;
+  cursor: not-allowed;
 }
