@@ -1,26 +1,31 @@
 import styles from "./toggle.module.css";
+import { useId } from "react";
 
 interface ToggleProps {
   checked: boolean;
-  onChange: (event: any) => void;
+  onChange: (checked: boolean) => void;
   disabled?: boolean;
   label?: string;
   labelLeft?: boolean;
+  ariaLabel?: string;
 }
 
 export default function ToggleSwitch({
   checked,
   onChange,
-  disabled,
+  disabled = false,
   label,
   labelLeft,
+  ariaLabel = "toggle",
 }: ToggleProps) {
   const labelStyles = `${styles["toggle-label"]} ${
     disabled ? styles.disabled : ""
   }`.trim();
 
+  const id = useId();
+
   return (
-    <label className={labelStyles}>
+    <label htmlFor={id} className={labelStyles}>
       {label && labelLeft && <span>{label}</span>}
       <input
         type="checkbox"
@@ -28,6 +33,7 @@ export default function ToggleSwitch({
         onChange={(e) => onChange(e.target.checked)}
         disabled={disabled}
         className={styles["visually-hidden"]}
+        aria-label={label ? undefined : ariaLabel}
       />
       <span
         className={styles["toggle-outer"]}
